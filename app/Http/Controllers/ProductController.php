@@ -13,12 +13,31 @@ class ProductController extends Controller
         // CompanyController から　companies テーブルのデータ取得 (一覧ソート用)
     }
     // 商品一覧表示用
-    public function showProductsList() {
-        // products テーブルからデータ取得
-        $model_1 = new Product();
-        $products = $model_1->getList();
-        // getCompaniesList から会社リスト取得
+    public function showProductsList(Request $request) {
+        $keyword = $request->input('keyword');
+        $filter = $request->input('filter');
+        
+        // Product モデルから商品一覧データ取得
+        $model_product = new Product();
+        $query = $model_product->getProductsList();
+
+        // 検索キーワードがあればデータを絞り込む
+        if (!empty($keyword)) {
+            $query->where('product_name', 'LIKE', "%{$keyword}%");
+        }
+        // フィルターが選択されていればデータを絞り込む
+        if (!empty($filter)) {
+            $query->where('company_name', $filter);
+        }
+        
+        // 商品一覧情報を作成
+        $products = $query->get();
+        
+        // 会社一覧情報を取得
+        $model_companies = new Company();
+        $companies = $model_companies->getList();
+
         // products_list を呼び出す（ビュー表示）
-        return view('products_list', compact('products'));
+        return view('products_list', compact('keyword', 'products', 'companies'));
     }
 }
