@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/products_list', 'ProductController@showProductsList')->name('products_list');
+Route::post('/destroy{id}', 'ProductController@destroy')->name('product.destroy');

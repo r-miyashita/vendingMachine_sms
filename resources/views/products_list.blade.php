@@ -89,9 +89,9 @@
                         @csrf
                         <input type="text" name="keyword" value="{{ $keyword }}" class="search__form-input">
                         <select name="filter" class="search__form-filter">
-                        <option value="" hidden>メーカー</option>
+                            <option value="" hidden>メーカー</option>
                             @foreach ($companies as $company)
-                            <option value="{{ $company->company_name }}">{{ $company->company_name }}</option>
+                                <option value="{{ $company->company_name }}">{{ $company->company_name }}</option>
                             @endforeach
                         </select>
                         <input type="submit" value="検索" class="search__form-button">
@@ -121,6 +121,13 @@
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->stock }}</td>
                                 <td>{{ $product->company_name }}</td>
+                                <td><a href="#">詳細表示</a></td>
+                                <td>
+                                    <form action="{{ route('product.destroy', ['id'=>$product->id]) }}" method="POST">
+                                        @csrf
+                                        <button type="submit">削除</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

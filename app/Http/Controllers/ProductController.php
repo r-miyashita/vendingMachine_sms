@@ -8,11 +8,8 @@ use App\Models\Company;
 
 class ProductController extends Controller
 {
-    // 会社リスト取得用
-    public function getCompaniesList() {
-        // CompanyController から　companies テーブルのデータ取得 (一覧ソート用)
-    }
-    // 商品一覧表示用
+
+    // 商品一覧表示
     public function showProductsList(Request $request) {
         $keyword = $request->input('keyword');
         $filter = $request->input('filter');
@@ -38,6 +35,15 @@ class ProductController extends Controller
         $companies = $model_companies->getList();
 
         // products_list を呼び出す（ビュー表示）
-        return view('products_list', compact('keyword', 'products', 'companies'));
+        return view('products_list', compact('keyword', 'filter', 'products', 'companies'));
+    }
+
+    // 商品削除
+    public function destroy($id) {
+        // products テーブルの指定idを削除
+        $model_product = new Product();
+        $product = $model_product->destroy($id);
+        // products_list を呼び出す（ビュー表示）
+        return back();
     }
 }
