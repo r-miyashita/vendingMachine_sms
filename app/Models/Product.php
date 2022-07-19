@@ -20,6 +20,7 @@ class Product extends Model
                             'products.stock',
                             'companies.company_name'
                         );
+                        
         return $products;
     }
 }

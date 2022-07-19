@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Models\Company;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
 
-    // 商品一覧表示
+    // ★一覧表示
     public function showProductsList(Request $request) {
         $keyword = $request->input('keyword');
         $filter = $request->input('filter');
@@ -30,7 +32,7 @@ class ProductController extends Controller
         // 商品一覧情報を作成
         $products = $query->get();
         
-        // 会社一覧情報を取得
+        // 会社一覧情報を取得(検索フォームのフィルター用)
         $model_companies = new Company();
         $companies = $model_companies->getList();
 
@@ -38,12 +40,68 @@ class ProductController extends Controller
         return view('products_list', compact('keyword', 'filter', 'products', 'companies'));
     }
 
-    // 商品削除
+    // ★削除
     public function destroy($id) {
         // products テーブルの指定idを削除
         $model_product = new Product();
         $product = $model_product->destroy($id);
         // products_list を呼び出す（ビュー表示）
         return back();
+    }
+
+    // ★新規登録
+    public function registerProduct() {
+        // 
+        // 会社一覧情報を取得(検索フォームのフィルター用)
+        $model_companies = new Company();
+        $companies = $model_companies->getList();
+        return view('register_product', compact('companies'));
+    }
+    // ★ 新規登録
+    public function create(ProductRequest $request) {
+
+        $product = new Product();
+
+        // 会社名に合致する id を取得
+        $company = new Company(); 
+        $company_id = $company->getCompanyName()
+                              ->where('company_name', $request->input('company_name'))
+                              ->value('id');
+        
+        DB::beginTransaction();
+
+        try {
+            // 登録していく
+            $product->company_id = $company_id;
+            $product->product_name = $request->input('product_name');
+            $product->price = $request->input('price');
+            $product->stock = $request->input('stock');
+            $product->comment = $request->input('comment');
+    
+            // アップロードしたファイルを保存 & ファイルパスをDBへ保存
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $name = date('Ymd_His') . '_' . $photo->getClientOriginalName();
+                $path = $photo->storeAS('upfiles', $name);
+                $product->img_path = $path;
+            }
+             // 保存
+            $product->save();
+
+            // コミット
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back();
+        }
+            
+        return back();
+    }
+
+
+    // ★詳細表示
+    public function showDetail() {
+        
     }
 }

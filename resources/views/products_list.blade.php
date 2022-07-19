@@ -83,15 +83,18 @@
                 <div class="title m-b-md">
                     Laravel
                 </div>
+
                 <!-- ↓↓↓ 検索フォーム ↓↓↓ -->
                 <div class="search">
                     <form action="{{ route('products_list') }}" method="GET" class="search__form">
                         @csrf
                         <input type="text" name="keyword" value="{{ $keyword }}" class="search__form-input">
-                        <select name="filter" class="search__form-filter">
+                        <select name="filter" class="search__form-filter" value="{{ old('filter') }}">
                             <option value="" hidden>メーカー</option>
                             @foreach ($companies as $company)
-                                <option value="{{ $company->company_name }}">{{ $company->company_name }}</option>
+                                <option value="{{ $company->company_name }}"
+                                @if ($company->company_name == old('filter')) selected @endif>
+                                {{ $company->company_name }}</option>
                             @endforeach
                         </select>
                         <input type="submit" value="検索" class="search__form-button">
@@ -99,6 +102,11 @@
                     
                 </div>
                 <!-- ↑↑↑ 検索フォームここまで ↑↑↑ -->
+
+                <!-- ↓↓↓ 新規登録リンク ↓↓↓ -->
+                <a href="{{ route('product.register') }}" >新規登録</a>
+                <!-- ↑↑↑ 新規登録リンクここまで ↑↑↑ -->
+
                 <!-- ↓↓↓ 商品一覧テーブル表示 ↓↓↓ -->
                 <div class="lists">
                     <table>
@@ -134,6 +142,7 @@
                     </table>
                 </div>
                 <!-- ↑↑↑ 商品一覧テーブル表示ここまで ↑↑↑ -->
+
             </div>
         </div>
     </body>
