@@ -23,4 +23,20 @@ class Product extends Model
                         
         return $products;
     }
+    
+    // 商品詳細データ取得
+    public function getProductDetail($id) {
+        $product = DB::table('products')
+                       ->select(
+                           'id',
+                           'company_id',
+                           'img_path',
+                           'product_name',
+                           'price',
+                           'stock'
+                       )
+                       ->where('id', $id);
+        
+        return $product;
+    }
 }

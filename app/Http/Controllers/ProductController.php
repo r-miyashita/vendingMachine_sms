@@ -101,7 +101,17 @@ class ProductController extends Controller
 
 
     // ★詳細表示
-    public function showDetail() {
-        
+    public function showDetail($id) {
+        $model_products = new Product();
+        $products = $model_products->getProductDetail($id)
+                                   ->get();
+        // id を名前に変換しておく
+        // $model_company = new Company();
+        // $company_name = $model_company->getCompanyName()
+        //                               ->where('id', $products->get('company_id'))
+        //                               ->get();
+        // $products->get('company_id') = $company_name->get('company_name');
+        dd($products);
+        return view('product_detail', compact('products'));
     }
 }
