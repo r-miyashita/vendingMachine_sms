@@ -29,7 +29,7 @@ class ProductRequest extends FormRequest
             'price' => 'required | digits_between:1,11',
             'stock' => 'required | digits_between:1,11',
             'comment' => 'max:10000',
-            'photo' => 'image',
+            'photo' => 'image | max:5120',
         ];
     }
 
@@ -57,6 +57,7 @@ class ProductRequest extends FormRequest
             'stock.digits_between' => ':attributeは:min〜:max桁の数値で入力してください。',
             'comment.max' => ':attributeは:max字以内で入力してください。',
             'photo.image' => ':attributeには画像ファイルを指定してください。',
+            'photo.max' => ':attributeは5メガバイト以下で選択してください。',
         ];
     }
 }

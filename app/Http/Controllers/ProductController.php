@@ -82,8 +82,8 @@ class ProductController extends Controller
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
                 $name = date('Ymd_His') . '_' . $photo->getClientOriginalName();
-                $path = $photo->storeAS('upfiles', $name);
-                $product->img_path = $path;
+                $path = $photo->storeAS('upfiles', $name, 'public');
+                $product->img_path = 'storage/' . $path;
             }
              // 保存
             $product->save();
@@ -105,13 +105,13 @@ class ProductController extends Controller
         $model_products = new Product();
         $products = $model_products->getProductDetail($id)
                                    ->get();
-        // id を名前に変換しておく
-        // $model_company = new Company();
-        // $company_name = $model_company->getCompanyName()
-        //                               ->where('id', $products->get('company_id'))
-        //                               ->get();
-        // $products->get('company_id') = $company_name->get('company_name');
-        dd($products);
-        return view('product_detail', compact('products'));
+        // 商品のメーカー名取得しておく
+        $model_company = new Company();
+        $company_name = $model_company->getCompanyName()
+                                      ->select('company_name')
+                                      ->where('id', $products->pluck('company_id'))
+                                      ->value('company_name');
+        // dd( $products->pluck('img_path'));
+        return view('product_detail', compact('products', 'company_name'));
     }
 }

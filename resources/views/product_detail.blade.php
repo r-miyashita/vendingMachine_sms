@@ -107,11 +107,11 @@
                         @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->id }}</td>
-                                <td>{{ $product->img_path }}</td>
+                                <td><img src="{{ asset($product->img_path) }}" style="height:200px; width: 200px;"></td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->stock }}</td>
-                                <td>{{ $product->company_id }}</td>
+                                <td>{{ $company_name }}</td>
                                 <td><a href="#">編集</a></td>
                                 <td>
                                     <form action="{{ route('product.destroy', ['id'=>$product->id]) }}" method="POST">
@@ -125,7 +125,7 @@
                     </table>
                 </div>
                 <!-- ↑↑↑ 商品一覧テーブル表示ここまで ↑↑↑ -->
-               
+
                 <!-- ↓↓↓ 戻るボタン ↓↓↓ -->
                 <a href="{{ route('products_list') }}">戻る</a>
                 <!-- ↑↑↑ 戻るボタンここまで ↑↑↑ -->
