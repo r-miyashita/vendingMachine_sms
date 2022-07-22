@@ -33,7 +33,8 @@ class Product extends Model
                            'img_path',
                            'product_name',
                            'price',
-                           'stock'
+                           'stock',
+                           'comment'
                        )
                        ->where('id', $id);
         

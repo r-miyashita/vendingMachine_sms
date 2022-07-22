@@ -114,4 +114,21 @@ class ProductController extends Controller
         // dd( $products->pluck('img_path'));
         return view('product_detail', compact('products', 'company_name'));
     }
+
+    // ★編集
+    public function getEdit($id) {
+        $model_products = new Product();
+        $products = $model_products->getProductDetail($id)
+                                   ->first();
+        // 商品のメーカー名取得しておく
+        $model_company = new Company();
+        $company_name = $model_company->getCompanyName()
+                                      ->select('company_name')
+                                      ->where('id', $products->company_id)
+                                      ->value('company_name');
+        // 会社一覧取得
+        $companies = $model_company->getList();
+        // dd($company_name);
+        return view('product_edit', compact('products', 'companies', 'company_name'));
+    }
 }

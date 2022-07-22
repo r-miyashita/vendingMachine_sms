@@ -112,7 +112,7 @@
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->stock }}</td>
                                 <td>{{ $company_name }}</td>
-                                <td><a href="#">編集</a></td>
+                                <td><a href="{{ route('product.get.edit', ['id'=>$product->id]) }}">編集</a></td>
                                 <td>
                                     <form action="{{ route('product.destroy', ['id'=>$product->id]) }}" method="POST">
                                         @csrf
