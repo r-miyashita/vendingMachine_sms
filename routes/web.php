@@ -25,3 +25,4 @@ Route::get('/product_edit{id}', 'ProductController@getEdit')->name('product.get.
 
 Route::post('/destroy{id}', 'ProductController@destroy')->name('product.destroy');
 Route::post('/register_product', 'ProductController@create')->name('product.create');
+Route::post('/product_edit{id}', 'ProductController@update')->name('product.update');

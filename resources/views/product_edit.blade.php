@@ -91,15 +91,15 @@
                 </div>
 
                 <!-- ↓↓↓ 登録フォーム ↓↓↓ -->
-                <form action="{{ route('product.create') }}" method="POST" enctype="multipart/form-data" class="form">
+                <form action="{{ route('product.update', ['id'=>$products->id]) }}" method="POST" enctype="multipart/form-data" class="form">
                     @csrf
                     <div class="form__input">
                         <label for="id">ID</label>
-                        <input type="text" name="id" value="" placeholder="{{ $products->id }}" readonly>
+                        <input type="text" name="id" value="{{ $products->id }}" readonly>
                     </div>
                     <div class="form__input">
                         <label for="product_name">商品名</label>
-                        <input type="text" name="product_name" value="" placeholder="{{ $products->product_name }}">
+                        <input type="text" name="product_name" value="{{ $products->product_name }}">
                         @if ($errors->has('product_name'))
                             <p class="form__input--red">{{ $errors->first('product_name') }}</p>
                         @endif
@@ -121,21 +121,21 @@
                     </div>
                     <div class="form__input">
                         <label for="price">価格</label>
-                        <input type="text" name="price" value="" placeholder="{{ $products->price }}">
+                        <input type="text" name="price" value="{{ $products->price }}">
                         @if ($errors->has('price'))
                             <p class="form__input--red">{{ $errors->first('price') }}</p>
                         @endif
                     </div>
                     <div class="form__input">
                         <label for="stock">在庫数</label>
-                        <input type="text" name="stock" value="" placeholder="{{ $products->stock }}">
+                        <input type="text" name="stock" value="{{ $products->stock }}">
                         @if ($errors->has('stock'))
                             <p class="form__input--red">{{ $errors->first('stock') }}</p>
                         @endif
                     </div>
                     <div class="form__input">
                         <label for="comment">コメント</label>
-                        <textarea type="text" name="comment" value="{{ $products->comment }}" placeholder="{{ $products->comment }}"></textarea>
+                        <textarea type="text" name="comment" value="{{ $products->comment }}">{{ $products->comment }}</textarea>
                         @if ($errors->has('comment'))
                             <p class="form__input--red">{{ $errors->first('comment') }}</p>
                         @endif
@@ -148,7 +148,7 @@
                         @endif
                     </div>
                     
-                    <input type="submit" value="登録">
+                    <input type="submit" value="更新">
                 </form>
                 <!-- ↑↑↑ 登録フォームここまで ↑↑↑ -->
                 <!-- ↓↓↓ 戻るボタン ↓↓↓ -->

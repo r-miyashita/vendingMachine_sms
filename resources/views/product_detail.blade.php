@@ -98,9 +98,10 @@
                                 <th>id</th>
                                 <th>商品画像</th>
                                 <th>商品名</th>
+                                <th>メーカー名</th>
                                 <th>価格</th>
                                 <th>在庫数</th>
-                                <th>メーカー名</th>
+                                <th>コメント</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,9 +110,10 @@
                                 <td>{{ $product->id }}</td>
                                 <td><img src="{{ asset($product->img_path) }}" style="height:200px; width: 200px;"></td>
                                 <td>{{ $product->product_name }}</td>
+                                <td>{{ $company_name }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->stock }}</td>
-                                <td>{{ $company_name }}</td>
+                                <td>{{ $product->comment }}</td>
                                 <td><a href="{{ route('product.get.edit', ['id'=>$product->id]) }}">編集</a></td>
                                 <td>
                                     <form action="{{ route('product.destroy', ['id'=>$product->id]) }}" method="POST">

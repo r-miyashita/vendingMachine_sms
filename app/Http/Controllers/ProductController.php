@@ -115,7 +115,7 @@ class ProductController extends Controller
         return view('product_detail', compact('products', 'company_name'));
     }
 
-    // ★編集
+    // ★編集画面
     public function getEdit($id) {
         $model_products = new Product();
         $products = $model_products->getProductDetail($id)
@@ -130,5 +130,48 @@ class ProductController extends Controller
         $companies = $model_company->getList();
         // dd($company_name);
         return view('product_edit', compact('products', 'companies', 'company_name'));
+    }
+
+    // ★更新処理
+    public function update(ProductRequest $request, $id) {
+
+        $products = Product::findOrFail($id);
+        // $products = $products->getProductDetail($id)
+        //                     ->get();
+        // 会社名に合致する id を取得
+        $company = new Company(); 
+        $company_id = $company->getCompanyName()
+                              ->where('company_name', $request->input('company_name'))
+                              ->value('id');
+        // dd($products, $request->input('product_name'), $id, $company_id);
+        DB::beginTransaction();
+
+        try {
+            // 登録していく
+            $products->company_id = $company_id;
+            $products->product_name = $request->input('product_name');
+            $products->price = $request->input('price');
+            $products->stock = $request->input('stock');
+            $products->comment = $request->input('comment');
+    
+            // アップロードしたファイルを保存 & ファイルパスをDBへ保存
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $name = date('Ymd_His') . '_' . $photo->getClientOriginalName();
+                $path = $photo->storeAS('upfiles', $name, 'public');
+                $products->img_path = 'storage/' . $path;
+            }
+             // 保存
+            $products->save();
+
+            // コミット
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back();
+        }
+            
+        return back();
     }
 }
