@@ -91,15 +91,15 @@
                 </div>
 
                 <!-- ↓↓↓ 登録フォーム ↓↓↓ -->
-                <form action="{{ route('product.update', ['id'=>$products->id]) }}" method="POST" enctype="multipart/form-data" class="form">
+                <form action="{{ route('product.update', ['id'=>$product->id]) }}" method="POST" enctype="multipart/form-data" class="form">
                     @csrf
                     <div class="form__input">
                         <label for="id">ID</label>
-                        <input type="text" name="id" value="{{ $products->id }}" readonly>
+                        <input type="text" name="id" value="{{ $product->id }}" readonly>
                     </div>
                     <div class="form__input">
                         <label for="product_name">商品名</label>
-                        <input type="text" name="product_name" value="{{ $products->product_name }}">
+                        <input type="text" name="product_name" value="{{ $product->product_name }}">
                         @if ($errors->has('product_name'))
                             <p class="form__input--red">{{ $errors->first('product_name') }}</p>
                         @endif
@@ -121,28 +121,28 @@
                     </div>
                     <div class="form__input">
                         <label for="price">価格</label>
-                        <input type="text" name="price" value="{{ $products->price }}">
+                        <input type="text" name="price" value="{{ $product->price }}">
                         @if ($errors->has('price'))
                             <p class="form__input--red">{{ $errors->first('price') }}</p>
                         @endif
                     </div>
                     <div class="form__input">
                         <label for="stock">在庫数</label>
-                        <input type="text" name="stock" value="{{ $products->stock }}">
+                        <input type="text" name="stock" value="{{ $product->stock }}">
                         @if ($errors->has('stock'))
                             <p class="form__input--red">{{ $errors->first('stock') }}</p>
                         @endif
                     </div>
                     <div class="form__input">
                         <label for="comment">コメント</label>
-                        <textarea type="text" name="comment" value="{{ $products->comment }}">{{ $products->comment }}</textarea>
+                        <textarea type="text" name="comment" value="{{ $product->comment }}">{{ $product->comment }}</textarea>
                         @if ($errors->has('comment'))
                             <p class="form__input--red">{{ $errors->first('comment') }}</p>
                         @endif
                     </div>
                     <div class="form__input">
                         <label for="photo">商品画像</label>
-                        <input type="file" name="photo" value="{{ $products->img_path }}">
+                        <input type="file" name="photo" value="{{ $product->img_path }}">
                         @if ($errors->has('photo'))
                             <p class="form__input--red">{{ $errors->first('photo') }}</p>
                         @endif
@@ -152,7 +152,7 @@
                 </form>
                 <!-- ↑↑↑ 登録フォームここまで ↑↑↑ -->
                 <!-- ↓↓↓ 戻るボタン ↓↓↓ -->
-                <a href="{{ route('products_list') }}">戻る</a>
+                <a href="{{ route('product.list') }}">戻る</a>
                 <!-- ↑↑↑ 戻るボタンここまで ↑↑↑ -->
             </div>
         </div>
