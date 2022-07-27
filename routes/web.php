@@ -17,18 +17,21 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
-
+// ★一覧
 Route::get('/list', 'ProductController@showList')->name('product.list');
 
+// ★登録
 Route::get('/create', 'ProductController@showCreateForm')->name('product.create.get');
 Route::post('/create', 'ProductController@create')->name('product.create');
 
+// ★詳細
 Route::get('/detail{id}', 'ProductController@showDetail')->name('product.detail');
 
+// ★編集
 Route::get('/update{id}', 'ProductController@showUpdateForm')->name('product.update.get');
 Route::post('/update{id}', 'ProductController@update')->name('product.update');
 
+// ★削除
 Route::post('/destroy{id}', 'ProductController@destroy')->name('product.destroy');
 
 

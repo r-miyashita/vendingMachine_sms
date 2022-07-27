@@ -124,7 +124,7 @@
                         @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->id }}</td>
-                                <td>{{ $product->img_path }}</td>
+                                <td><img src="{{ asset($product->img_path) }}" style="height:50px; width: 50px;"></td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->stock }}</td>

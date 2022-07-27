@@ -7,22 +7,50 @@ use Illuminate\Support\Facades\DB;
 
 class Company extends Model
 {
-    // 全件取得
+    /************************************
+     * 会社情報取得
+     * テーブルから一覧情報を取得。
+     * 
+     * @param なし
+     * @return 全ての会社情報
+     */
     public function getList() {
-        $companies = DB::table('companies')->get();
+        $companies = DB::table('companies')
+                       ->get();
         
         return $companies;
     }
 
-    // 会社名 & 会社コード取得
-    public function getCompanyName() {
-        $companies = DB::table('companies')
-                         ->select(
-                             'companies.id',
-                             'companies.company_name'
-                         );
+    /************************************
+     * 会社ID取得
+     * テーブルからIDを取得。
+     * 
+     * @param $request 商品名
+     * @return 商品名と一致するID
+     */
+    public function getCompanyId($request) {
+        $company_id = DB::table('companies')
+                        ->select('id')
+                        ->where('company_name', $request->input('company_name'))
+                        ->value('id');
         
-        return $companies;
+        return $company_id;
+    }
+
+     /************************************
+     * 会社名取得
+     * テーブルから会社名を取得。
+     * 
+     * @param $product ID
+     * @return IDと一致する商品名
+     */
+    public function getCompanyName($product) {
+        $company_name = DB::table('companies')
+                          ->select('company_name')
+                          ->where('id', $product->company_id)
+                          ->value('company_name');
+
+        return $company_name;
     }
 }
 
