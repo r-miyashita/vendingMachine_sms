@@ -107,7 +107,7 @@
                         <tbody>
                             <tr>
                                 <td>{{ $product->id }}</td>
-                                <td><img src="{{ asset($product->img_path) }}" style="height:200px; width: 200px;"></td>
+                                <td><img src="{{ asset('storage/' . $product->img_path) }}" style="height:200px; width: 200px;"></td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ $company_name }}</td>
                                 <td>{{ $product->price }}</td>

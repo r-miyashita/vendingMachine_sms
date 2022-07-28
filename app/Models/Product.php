@@ -76,28 +76,28 @@ class Product extends Model
      * 
      * @return なし
      */
-    public function register($request, $product, $company_id, $sale) {
+    public function register($request, $company_id, $sale) {
         DB::beginTransaction();
 
         try {
             // 登録していく
-            $product->company_id = $company_id;
-            $product->product_name = $request->input('product_name');
-            $product->price = $request->input('price');
-            $product->stock = $request->input('stock');
-            $product->comment = $request->input('comment');
+            $this->company_id = $company_id;
+            $this->product_name = $request->input('product_name');
+            $this->price = $request->input('price');
+            $this->stock = $request->input('stock');
+            $this->comment = $request->input('comment');
     
             // アップロードしたファイルを保存 & ファイルパスをDBへ保存
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
                 $name = date('Ymd_His') . '_' . $photo->getClientOriginalName();
                 $path = $photo->storeAS('upfiles', $name, 'public');
-                $product->img_path = 'storage/' . $path;
+                $this->img_path = $path;
             }
              // 保存
-            $product->save();
+            $this->save();
             // salesも一緒に登録（更新）
-
+            $sale->register($this);
             // コミット
             DB::commit();
 

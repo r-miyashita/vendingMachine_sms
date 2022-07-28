@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Sale extends Model
 {
@@ -14,10 +15,12 @@ class Sale extends Model
      * @param $product 登録対象となるインスタンス
      * @param $company_id 
      * 
-     * @return 商品詳細情報
+     * @return なし
      */
-    public function register() {
-
+    public function register($product) {
+        $this->product_id = $product->id;
+        $this->save();
+        $this->touch();
     }
 
     /************************************

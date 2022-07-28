@@ -16,6 +16,7 @@ class Company extends Model
      */
     public function getList() {
         $companies = DB::table('companies')
+                       ->select('company_name')
                        ->get();
         
         return $companies;

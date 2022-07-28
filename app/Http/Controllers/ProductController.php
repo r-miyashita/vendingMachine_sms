@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 use App\Models\Company;
+use App\Models\Sale;
 use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
@@ -69,7 +71,7 @@ class ProductController extends Controller
         $company_obj = new Company();
         $company_id = $company_obj->getCompanyId($request);
         
-        $product->register($request, $product, $company_id);
+        $product->register($request, $company_id, $sale);
 
         return back();
     }
@@ -85,9 +87,7 @@ class ProductController extends Controller
      * @return 商品情報、これに紐付く会社名
      */
     public function showDetail($id) {
-        $product_obj = new Product();
-        $product = $product_obj->getProductDetail($id)
-                               ->first();
+        $product = Product::findOrFail($id);
                                
         // 商品のメーカー名取得しておく
         $company_obj = new Company();
@@ -107,9 +107,7 @@ class ProductController extends Controller
      * @return 商品情報、これに紐付く会社名、セレクトボックス情報
      */
     public function showUpdateForm($id) {
-        $product_obj = new Product();
-        $product = $product_obj->getProductDetail($id)
-                               ->first();
+        $product = Product::findOrFail($id);
                                 
         // 商品のメーカー名取得しておく
         $company_obj = new Company();
@@ -133,15 +131,14 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
-        $sale_obj = new Sale();
-        $sale = $sale_obj->getRelationalRecord($id)
-                         ->first();
+        $sale = Sale::where('product_id', $id)
+                    ->firstOrFail();
 
         // 会社名に合致する id を取得
         $company_obj = new Company();
         $company_id = $company_obj->getCompanyId($request);
         
-        $product->register($request, $product, $company_id);
+        $product->register($request, $company_id, $sale);
             
         return back();
     }
@@ -157,10 +154,26 @@ class ProductController extends Controller
      * @return なし
      */
     public function destroy($id) {
+        // ファイル削除
+        $this->deleteFile($id);
         // products テーブルの指定idを削除
         Product::destroy($id);
+        Sale::where('product_id', $id)
+            ->firstOrFail()
+            ->delete();
+        
+        
         // list に戻る
         return back();
     }
+    
     // ↑↑↑ 【 destroy 】 処理ここまで ↑↑↑
+
+    // ↓↓↓ 【 サブ 】 処理ここから ↓↓↓
+    public function deleteFile($id) {
+        $product = Product::findOrFail($id);
+        $target = $product->img_path;
+        Storage::disk('public')->delete($target);
+    }
+    // ↑↑↑ 【 サブ 】 処理ここまで ↑↑↑
 }
