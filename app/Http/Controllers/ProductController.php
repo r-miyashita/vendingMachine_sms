@@ -138,7 +138,16 @@ class ProductController extends Controller
         $company_obj = new Company();
         $company_id = $company_obj->getCompanyId($request);
         
+        // 更新前画像パス取得
+        $old_img_path = $product->img_path;
+        
+        // DB更新
         $product->register($request, $company_id, $sale);
+        
+        // 更新前後で画像が一致しなければ、古い画像削除
+        if (!($old_img_path == $product->img_path)) {
+            Storage::disk('public')->delete($old_img_path); 
+        }
             
         return back();
     }
@@ -155,13 +164,16 @@ class ProductController extends Controller
      */
     public function destroy($id) {
         // ファイル削除
-        $this->deleteFile($id);
-        // products テーブルの指定idを削除
-        Product::destroy($id);
+        $product = Product::findOrFail($id);
+        $target = $product->img_path;
+        Storage::disk('public')->delete($target);
+        
+        // DB削除
+        $product->destroy($id);
+        
         Sale::where('product_id', $id)
             ->firstOrFail()
             ->delete();
-        
         
         // list に戻る
         return back();
@@ -169,11 +181,4 @@ class ProductController extends Controller
     
     // ↑↑↑ 【 destroy 】 処理ここまで ↑↑↑
 
-    // ↓↓↓ 【 サブ 】 処理ここから ↓↓↓
-    public function deleteFile($id) {
-        $product = Product::findOrFail($id);
-        $target = $product->img_path;
-        Storage::disk('public')->delete($target);
-    }
-    // ↑↑↑ 【 サブ 】 処理ここまで ↑↑↑
 }

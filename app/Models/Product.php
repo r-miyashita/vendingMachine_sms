@@ -41,29 +41,6 @@ class Product extends Model
 
         return $products;
     }
-    
-    /************************************
-     * 商品詳細情報取得
-     * IDから商品情報を特定する
-     * 
-     * @param $id 商品ID
-     * @return 商品詳細情報
-     */
-    public function getProductDetail($id) {
-        $product = DB::table('products')
-                     ->select(
-                         'id',
-                         'company_id',
-                         'img_path',
-                         'product_name',
-                         'price',
-                         'stock',
-                         'comment'
-                     )
-                     ->where('id', $id);
-        
-        return $product;
-    }
 
     /************************************
      * 登録（更新）

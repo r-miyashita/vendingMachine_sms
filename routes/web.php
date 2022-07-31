@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 
 // ★一覧
 Route::get('/list', 'ProductController@showList')->name('product.list');
