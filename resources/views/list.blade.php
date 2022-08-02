@@ -8,6 +8,8 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
+        
+        
 
         <!-- Styles -->
         <style>
@@ -108,8 +110,8 @@
                 <!-- ↑↑↑ 新規登録リンクここまで ↑↑↑ -->
 
                 <!-- ↓↓↓ 商品一覧テーブル表示 ↓↓↓ -->
-                <div class="lists">
-                    <table>
+                <div class="list">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>id</th>
@@ -131,9 +133,9 @@
                                 <td>{{ $product->company_name }}</td>
                                 <td><a href="{{ route('product.detail', ['id'=>$product->id]) }}">詳細表示</a></td>
                                 <td>
-                                    <form action="{{ route('product.destroy', ['id'=>$product->id]) }}" method="POST">
+                                    <form class="table__del-btn" action="{{ route('product.destroy', ['id'=>$product->id]) }}" method="POST">
                                         @csrf
-                                        <button type="submit">削除</button>
+                                        <button type="submit" value="">削除</button>
                                     </form>
                                 </td>
                             </tr>
@@ -142,8 +144,9 @@
                     </table>
                 </div>
                 <!-- ↑↑↑ 商品一覧テーブル表示ここまで ↑↑↑ -->
-
             </div>
         </div>
+        <!-- JavaScript -->
+        <script src="{{ asset('/js/script.js') }}"></script>
     </body>
 </html>
