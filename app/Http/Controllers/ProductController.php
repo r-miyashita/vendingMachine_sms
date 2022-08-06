@@ -12,6 +12,16 @@ use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     // ↓↓↓ 【 list 】 処理ここから ↓↓↓
     /************************************
      * 商品の一覧を表示

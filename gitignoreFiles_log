@@ -1,0 +1,14 @@
+★★★★★★ 【 git管理外ファイルの管理 】 ★★★★★★
+★ 
+★   ↓↓↓ フォーマット ↓↓↓
+★ 
+★   [yyyy-mm-dd: 対象ファイル: コメント]
+★ 
+★   ↑↑↑ フォーマット ↑↑↑
+★
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+
+[2022-08-06
+ : vendor/laravel/framework/src/Illuminate/Foundation/Auth/RegistersUsers.php
+ : function_register(新規登録後の画面遷移先変更(home画面でなくlogin画面へ遷移する仕様へ))
+]
