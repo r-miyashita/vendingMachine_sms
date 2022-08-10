@@ -1,112 +1,31 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-            /* ↓↓ 自分で記述 ↓↓ */
-            .form__input--red {
-                color: red;
-                font-size: 10px;
-            }
-            /* ↑↑ 自分で記述ここまで ↑↑ */
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
+@section('content')
+            <div class="container">
+                <!-- ↓↓↓ 見出し ↓↓↓ -->
+                <br>
+                <div class="heading">
+                    <h2 class="text-left">更新</h2>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
+                <br>
+                <!-- ↑↑↑ 見出しここまで ↑↑↑ -->
                 <!-- ↓↓↓ 登録フォーム ↓↓↓ -->
                 <form action="{{ route('product.update', ['id'=>$product->id]) }}" method="POST" enctype="multipart/form-data" class="form">
                     @csrf
-                    <div class="form__input">
+                    <div class="form-group">
                         <label for="id">ID</label>
-                        <input type="text" name="id" value="{{ $product->id }}" readonly>
+                        <input type="text" name="id" value="{{ $product->id }}" class="form-control" readonly>
                     </div>
-                    <div class="form__input">
+                    <div class="form-group">
                         <label for="product_name">商品名</label>
-                        <input type="text" name="product_name" value="{{ $product->product_name }}">
+                        <input type="text" name="product_name" value="{{ $product->product_name }}" class="form-control">
                         @if ($errors->has('product_name'))
                             <p class="form__input--red">{{ $errors->first('product_name') }}</p>
                         @endif
                     </div>
-                    <div class="form__input">
+                    <div class="form-group">
                         <label for="company_name">メーカー</label>
-                        <select name="company_name" value="">
+                        <select name="company_name" value="" class="form-control">
                             <option value="" hidden>選択してください</option>
                             @foreach ($companies as $company)
                                 <option value="{{ $company->company_name }}"
@@ -119,42 +38,41 @@
                             <p class="form__input--red">{{ $errors->first('company_name') }}</p>
                         @endif
                     </div>
-                    <div class="form__input">
+                    <div class="form-group">
                         <label for="price">価格</label>
-                        <input type="text" name="price" value="{{ $product->price }}">
+                        <input type="text" name="price" value="{{ $product->price }}" class="form-control">
                         @if ($errors->has('price'))
                             <p class="form__input--red">{{ $errors->first('price') }}</p>
                         @endif
                     </div>
-                    <div class="form__input">
+                    <div class="form-group">
                         <label for="stock">在庫数</label>
-                        <input type="text" name="stock" value="{{ $product->stock }}">
+                        <input type="text" name="stock" value="{{ $product->stock }}" class="form-control">
                         @if ($errors->has('stock'))
                             <p class="form__input--red">{{ $errors->first('stock') }}</p>
                         @endif
                     </div>
-                    <div class="form__input">
+                    <div class="form-group">
                         <label for="comment">コメント</label>
-                        <textarea type="text" name="comment" value="{{ $product->comment }}">{{ $product->comment }}</textarea>
+                        <textarea type="text" name="comment" value="{{ $product->comment }}" class="form-control">{{ $product->comment }}</textarea>
                         @if ($errors->has('comment'))
                             <p class="form__input--red">{{ $errors->first('comment') }}</p>
                         @endif
                     </div>
-                    <div class="form__input">
+                    <div class="form-group">
                         <label for="photo">商品画像</label>
-                        <input type="file" name="photo" value="{{ $product->img_path }}">
+                        <input type="file" name="photo" value="{{ $product->img_path }}" class="form-control-file">
                         @if ($errors->has('photo'))
                             <p class="form__input--red">{{ $errors->first('photo') }}</p>
                         @endif
                     </div>
-                    
-                    <input type="submit" value="更新">
+                    <div class="form__button">
+                        <input type="submit" value="更新" class="btn btn-primary">
+                    </div>
                 </form>
                 <!-- ↑↑↑ 登録フォームここまで ↑↑↑ -->
                 <!-- ↓↓↓ 戻るボタン ↓↓↓ -->
-                <a href="{{ route('product.list') }}">戻る</a>
+                <a href="{{ route('product.list') }}" class="back-btn">戻る</a>
                 <!-- ↑↑↑ 戻るボタンここまで ↑↑↑ -->
             </div>
-        </div>
-    </body>
-</html>
+@endsection
