@@ -83,13 +83,13 @@
             @endif
             </div>
         </div>
-        <div class="form__group form__group--button">
-            <input class="form__group-control--button" type="submit" value="更新">
+<!----------------------------------------------------
+ボタン
+----------------------------------------------------->
+        <div class="form__group--button">
+            <input class="form__group-button link--update" type="submit" value="Update">
+            <a class="form__group-button link--back" href="{{ route('product.detail', ['id'=>$product->id]) }}">Back</a>
         </div>
     </form>
-<!----------------------------------------------------
-戻る
------------------------------------------------------>
-    <a class="link--back" href="{{ route('product.list') }}">戻る</a>
 </div>
 @endsection

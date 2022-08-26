@@ -42,25 +42,42 @@ li {
 /*****************************************
 レスポンシブ
 *****************************************/
-@media (min-width: 576px) {
+@media screen and (min-width: 576px) {
   .container {
     max-width: 540px;
   }
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .container {
     max-width: 720px;
   }
 }
 
-@media (min-width: 992px) {
+@media screen and (min-width: 992px) {
   .container {
     max-width: 960px;
   }
+/********************
+登録フォーム
+********************/
+  .form__group--button {
+    display: flex;
+    flex-direction: column-reverse;
+    width: 40%;
+  }
+
+  .link--update {
+    margin: 0 auto;
+  }
+  
+  .link--back {
+    margin: 0 auto;
+  }
+
 }
 
-@media (min-width: 1200px) {
+@media screen and (min-width: 1200px) {
   .container {
     max-width: 1140px;
   }
@@ -155,8 +172,12 @@ li {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  max-width: 100%;
+  max-width: 70%;
   margin: 0 auto;
+  padding: 40px 0;
+  background-color: #fff;
+  border-radius: 1em;
+  border: solid 0.25em rgba(164, 182, 217, 0.4);
 }
 
 .form__group {
@@ -179,9 +200,181 @@ li {
   flex: 50%;
   padding: 0.5em;
   max-width: 400px;
+  border-radius: 0.5em;
+}
+
+.form__group-control:not(.form__group-control--file) {
+  border: solid 0.15em rgba(164, 182, 217, 0.4);
 }
 
 .wrapper--message {
   flex: 22%;
   margin: 0 0 0 3%;
+}
+
+.form__group--button {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 40%;
+}
+
+.form__group-button {
+  flex: 30%;
+}
+
+.link--back,
+.link--update {
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(164, 182, 217, 0.4);
+  border: none;
+  border-radius: 0.5em;
+  transition-duration: 0.2s;
+}
+
+.link--update {
+  margin: 0 0 0 1.5rem;
+}
+
+.link--update:hover {
+  background-color: rgba(163, 217, 184, 0.8);
+}
+
+.link--back {
+  margin: 0 1.5rem 0 0;
+}
+
+.link--back:hover {
+  background-color: rgba(239, 179, 179, 0.8);
+}
+
+/*****************************************
+検索フォーム
+*****************************************/
+.optional-field {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 0 1.5rem 0;
+  padding: 0.4rem 0.6rem;
+  background-color: rgba(155, 172, 204, 0.8);
+}
+
+.link--add,
+.link--search {
+  height: 100%;
+  font-size: 1em;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  color: rgba(25, 50, 97, 0.8);
+  background: rgba(255, 255, 255, 1);
+  border: none;
+  border-radius: 0.25em;
+  transition-duration: 0.2s;
+}
+
+.link--add:hover,
+.link--search:hover {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(25, 50, 97, 0.8);
+}
+
+.search-box__control {
+  font-size: 1em;
+  height: 100%;
+  flex: 50%;
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 0.25em;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/*****************************************
+テーブル
+*****************************************/
+.table {
+  width: 100%;
+  table-layout: fixed;
+  text-align: center;
+  border: none;
+}
+
+.table__head {
+  height: 3em;
+  color: #fff;
+  background-color: rgba(25, 50, 97, 0.8);
+}
+
+.table__head-row-cell {
+  border: none;  
+}
+
+.table__head-row-cell--narrow {
+  width: 8%;
+}
+
+.table__head-row-cell--primary {
+  width: 15%;
+}
+
+.table__head-row-cell--wide {
+  width: 30%;
+}
+
+.table__body {
+  background-color: rgba(155, 172, 204, 0.8);
+}
+
+.table__data-row {
+  font-size: 0.8em;
+  padding: 0 0 0 1em;
+  height: 6em;
+}
+
+.table__data-row-cell {
+  border: none;
+}
+
+.table__data-row-cell--img {
+  vertical-align: middle;
+  object-fit: cover;
+  height: 6em;
+}
+
+.link--detail,
+.link--destroy,
+.link--edit {
+  height: 100%;
+  font-size: 0.8em;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  color: rgba(25, 50, 97, 0.8);
+  background: rgba(255, 255, 255, 1);
+  border: none;
+  border-radius: 0.25em;
+  transition-duration: 0.2s;
+}
+
+.link--detail:hover,
+.link--edit:hover {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(42, 168, 92, 0.8);
+}
+
+.link--destroy:hover {
+  color: rgba(255, 255, 255, 1);
+  background: rgba(208, 52, 52, 0.8);
+}
+
+.wrapper--button {
+  text-align: center;
+  line-height: 8em;
+  vertical-align: middle;
 }
