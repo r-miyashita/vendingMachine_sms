@@ -11,4 +11,17 @@
 [2022-08-06
  : vendor/laravel/framework/src/Illuminate/Foundation/Auth/RegistersUsers.php
  : function_register(新規登録後の画面遷移先変更(home画面でなくlogin画面へ遷移する仕様へ))
+
+
+★コード変更お願いします(29行目)
+public function register(Request $request)
+{
+    $this->validator($request->all())->validate();
+
+    event(new Registered($user = $this->create($request->all())));
+
+    // 新規ユーザ作成後、ログイン画面へ遷移
+    return redirect()->route('login');
+}
+
 ]
