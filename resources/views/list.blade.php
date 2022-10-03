@@ -21,39 +21,51 @@
 <!-----------------------
 検索ボックス
 ------------------------>
-        <form class="search-box" action="{{ route('product.list') }}" method="GET">
+        <form class="search-box" action="{{ route('product.list.search') }}" method="GET">
             @csrf
-            <input  class="search-box__control" type="text" name="keyword" value="{{ $keyword }}">
-            <select name="filter" class="search-box__control" value="{{ old('filter') }}">
-                <option value="" hidden>メーカー</option>
+            <input  class="search-box__control" id="keyword" type="text" name="keyword" value="{{ $keyword }}">
+            <select name="filter" class="search-box__control" id="filter" value="{{ old('filter') }}">
+                <option value="">Company</option>
                 @foreach ($companies as $company)
                     <option value="{{ $company->company_name }}"
                     @if ($company->company_name == old('filter')) selected @endif>
                     {{ $company->company_name }}</option>
                 @endforeach
             </select>
-            <input type="submit" value="Search" class="search-box__button link--search">
+            <div class="search-box__control search-box__control-wrapper">
+                <span>Price</span>
+                <input class="iput-number" id="minPrice" type="number" name="min_price" min="0" value="" placeholder="下限">
+                <span>~</span>
+                <input class="iput-number" id="maxPrice" type="number" name="max_price" min="0" value="" placeholder="上限">
+            </div>
+            <div class="search-box__control search-box__control-wrapper">
+                <span>Stock</span>
+                <input class="iput-number" id="minStock" type="number" name="min_price" min="0" value="" placeholder="下限">
+                <span>~</span>
+                <input class="iput-number" id="maxStock" type="number" name="max_price" min="0" value="" placeholder="上限">
+            </div>
+            <input type="submit" value="Search" class="search-box__button link--search" id="ajaxSearch">
         </form>     
     </div>
 <!----------------------------------------------------
 商品一覧テーブル
 ----------------------------------------------------->
     <table class="table">
-        <thead class="table__head">
+        <thead class="table__head" >
             <tr class="table__head-row">
-                <th class="table__head-row-cell table__head-row-cell--narrow">id</th>
-                <th class="table__head-row-cell table__head-row-cell--primary">商品画像</th>
-                <th class="table__head-row-cell table__head-row-cell--wide">商品名</th>
-                <th class="table__head-row-cell table__head-row-cell--narrow">価格</th>
-                <th class="table__head-row-cell table__head-row-cell--narrow">在庫数</th>
-                <th class="table__head-row-cell table__head-row-cell--primary">メーカー名</th>
+                <th class="table__head-row-cell table__head-row-cell--narrow">ID</th>
+                <th class="table__head-row-cell table__head-row-cell--primary">Image</th>
+                <th class="table__head-row-cell table__head-row-cell--wide">Product</th>
+                <th class="table__head-row-cell table__head-row-cell--narrow">Price</th>
+                <th class="table__head-row-cell table__head-row-cell--narrow">Stock</th>
+                <th class="table__head-row-cell table__head-row-cell--primary">Company</th>
                 <th class="table__head-row-cell table__head-row-cell--narrow"></th>
                 <th class="table__head-row-cell table__head-row-cell--narrow"></th>
             </tr>
         </thead>
-        <tbody class="table__body">
+        <tbody class="table__body"  id="result">
         @foreach ($products as $product)
-            <tr class="table__data-row">
+            <tr class="table__data-row" id="resultTableRow">
                 <td class="table__data-row-cell">{{ $product->id }}</td>
                 <td class="table__data-row-cell"><img class="table__data-row-cell--img" src="{{ asset('storage/' . $product->img_path) }}"></td>
                 <td class="table__data-row-cell">{{ $product->product_name }}</td>

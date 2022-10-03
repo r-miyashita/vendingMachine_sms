@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Models\Product;
 use App\Models\Company;
 use App\Models\Sale;
@@ -37,14 +38,24 @@ class ProductController extends Controller
         $filter = $request->input('filter');
         
         $product_obj = new Product();
-        $products = $product_obj->getProductsList($keyword, $filter);
+        $products = $product_obj->getProductsList();
         
         // 会社一覧情報を取得(検索フォームのフィルター用)
         $company_obj = new Company();
         $companies = $company_obj->getList();
-
+        
         // list を呼び出す（ビュー表示）
         return view('list', compact('keyword', 'filter', 'products', 'companies'));
+    }
+
+    public function getSearchResult(Request $request) {
+        // Product モデルから商品一覧データ取得
+        $product_obj = new Product();
+
+        $products = $product_obj->getSearchResult($request);
+
+        header('Content-type: application/json');
+        return json_encode($products);
     }
     // ↑↑↑ 【 list 】 処理ここまで ↑↑↑
 

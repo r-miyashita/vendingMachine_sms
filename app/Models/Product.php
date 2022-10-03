@@ -17,7 +17,7 @@ class Product extends Model
      * @param $filter フィルターワード
      * @return 一覧情報
      */
-    public function getProductsList($keyword, $filter) {
+    public function getProductsList() {
         $query = DB::table('products')
                    ->join('companies', 'products.company_id', '=', 'companies.id')
                    ->select(
@@ -28,14 +28,6 @@ class Product extends Model
                        'products.stock',
                        'companies.company_name'
                    );
-        // 検索キーワードがあればデータを絞り込む
-        if (!empty($keyword)) {
-            $query->where('product_name', 'LIKE', "%{$keyword}%");
-        }
-        // フィルターが選択されていればデータを絞り込む
-        if (!empty($filter)) {
-            $query->where('company_name', $filter);
-        }
         
         $products = $query->get();
 
@@ -82,5 +74,62 @@ class Product extends Model
             DB::rollback();
             return back();
         }
+    }
+
+    public function getSearchResult($request) {
+        $keyword = $request->input('keyword');
+        $filter = $request->input('filter');
+        $minPrice = $request->input('minPrice');
+        $maxPrice = $request->input('maxPrice');
+        $minStock = $request->input('minStock');
+        $maxStock = $request->input('maxStock');
+
+        $query = DB::table('products')
+                  ->join('companies', 'products.company_id', '=', 'companies.id')
+                  ->select(
+                      'products.id',
+                      'products.img_path',
+                      'products.product_name',
+                      'products.price',
+                      'products.stock',
+                      'companies.company_name'
+                  );
+        // 検索キーワードがあればデータを絞り込む
+        if (!empty($keyword)) {
+            $query->where('product_name', 'LIKE', "%{$keyword}%");
+        }
+
+        // フィルターが選択されていればデータを絞り込む
+        if (!empty($filter)) {
+            $query->where('company_name', $filter);
+        }
+
+        // 価格の下限・上限が設定されていればデータを絞り込む
+        if (!empty($minPrice) && !empty($maxPrice)) {
+        //① 上限・下限ともに存在
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
+        } elseif (!empty($minPrice) && empty($maxPrice)) {
+        //② 下限のみ存在
+            $query->where('price', '>=', $minPrice);
+        } elseif (!empty($maxPrice) && empty($minPrice)) {
+        //③ 上限のみ存在
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        // 在庫の下限・上限が設定されていればデータを絞り込む
+        if (!empty($minStock) && !empty($maxStock)) {
+        //① 上限・下限ともに存在
+            $query->whereBetween('stock', [$minStock, $maxStock]);
+        } elseif (!empty($minStock) && empty($maxStock)) {
+        //② 下限のみ存在
+            $query->where('stock', '>=', $minStock);
+        } elseif (!empty($maxStock) && empty($minStock)) {
+        //③ 上限のみ存在
+            $query->where('stock', '<=', $maxStock);
+        }
+
+        $products = $query->get();
+
+        return $products;
     }
 }

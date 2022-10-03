@@ -16,6 +16,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/update.css') }}" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="app">
@@ -52,5 +55,6 @@
     </div>
     <!-- JavaScript -->
     <script src="{{ asset('/js/global.js') }}"></script>
+    <script src="{{ asset('/js/ajax.js') }}"></script>
 </body>
 </html>
