@@ -195,9 +195,6 @@ class ProductController extends Controller
         Sale::where('product_id', $id)
             ->firstOrFail()
             ->delete();
-        
-        // list に戻る
-        return back();
     }
     
     // ↑↑↑ 【 destroy 】 処理ここまで ↑↑↑

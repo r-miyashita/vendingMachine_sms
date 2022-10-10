@@ -1,6 +1,7 @@
+$(function() {
 /********************************
- * イベント発火
- * 
+ * 検索処理
+ * ******************************
  * phpからデータ取得
  * 
  * 初期テーブル削除
@@ -8,7 +9,6 @@
  * 結果テーブル作成
  ********************************/
 
-$(function() {
     $('#ajaxSearch').on('click',function(e){
         var keyword = $('#keyword').val();
         var filter = $('#filter option:selected').val();
@@ -32,26 +32,25 @@ $(function() {
                 "minStock": minStock,
                 "maxStock": maxStock
             }
-        }).done(function(data) {
 
+        }).done(function(data) {
             $('#result').remove();
             $('.table').append('<tbody class="table__body"  id="result">');
             var $tag_td = '<td class="table__data-row-cell">';
-            var $tag_detail = '<td class="table__data-row-cell table__data-row-cell--button"><a class="link--detail" href="{{ route(\'product.detail\', [\'id\'=>$product->id]) }}">Detail</a></td>';
-            var $tag_destroy = '';
+            var $tag_td_btn = '<td class="table__data-row-cell table__data-row-cell--button">';
 
             for(var i in data) {
-                $('#result').append('<tr class="table__data-row" id= "rowNum' + i + '">');
-
-                $('#rowNum'+ i)
+                $('#result').append('<tr class="table__data-row" id= "rowId' + data[i].id + '">');
+                 
+                $('#rowId'+ data[i].id)
                 .append($tag_td + data[i].id)
                 .append($tag_td + '<img class="table__data-row-cell--img" src="storage/' + data[i].img_path + '">')
                 .append($tag_td + data[i].product_name)
                 .append($tag_td + data[i].price)
                 .append($tag_td + data[i].stock)
                 .append($tag_td + data[i].company_name)
-                .append($tag_detail)
-                .append($tag_destroy)
+                .append($tag_td_btn + '<a class="link--detail" href="' + 'detail/' + data[i].id + '">Detail</a>')
+                .append($tag_td_btn + '<button class="link--destroy" type="submit" value="">Destroy</button>')
                 .appendTo($('#result'));
             }
 
@@ -61,6 +60,44 @@ $(function() {
           console.log(data);
         });
     });
+
+/********************************
+ * 削除処理
+ * ******************************
+ * phpからデータ取得
+ * 
+ * 初期テーブル削除
+ * 
+ * 結果テーブル作成
+ ********************************/
+
+    $(document).on('click', '.link--destroy', function(){
+        if(confirm("本当に削除しますか？")) {
+            // クリックされた行要素取得(要素のidは 「'rowId' + 商品ID」 で設定されている)
+            var $target = $(this).parent().parent();
+            // ターゲットから商品IDを取得
+            var $id = $target.attr('id').slice(5);
+            // 商品IDに紐づく商品を削除
+            // ajax
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'POST',
+                url: 'destroy/' + $id,
+                datatype: 'json',
+                data: {
+                    "id": $id
+                }
+            }).done(function(data) {
+                console.log('削除成功' + 'ID:' + $id);
+                $target.remove();
+            }).fail(function(data) {
+                console.log('削除失敗' + 'ID:' + $id);
+            });
+        }else {
+            return false;
+        }
+    });
+
 });
-
-

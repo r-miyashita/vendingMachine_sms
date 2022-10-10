@@ -65,7 +65,7 @@
         </thead>
         <tbody class="table__body"  id="result">
         @foreach ($products as $product)
-            <tr class="table__data-row" id="resultTableRow">
+            <tr class="table__data-row" id="rowId{{ $product->id }}">
                 <td class="table__data-row-cell">{{ $product->id }}</td>
                 <td class="table__data-row-cell"><img class="table__data-row-cell--img" src="{{ asset('storage/' . $product->img_path) }}"></td>
                 <td class="table__data-row-cell">{{ $product->product_name }}</td>
@@ -73,12 +73,7 @@
                 <td class="table__data-row-cell">{{ $product->stock }}</td>
                 <td class="table__data-row-cell">{{ $product->company_name }}</td>
                 <td class="table__data-row-cell table__data-row-cell--button"><a class="link--detail" href="{{ route('product.detail', ['id'=>$product->id]) }}">Detail</a></td>
-                <td class="table__data-row-cell table__data-row-cell--button">
-                    <form action="{{ route('product.destroy', ['id'=>$product->id]) }}" method="POST">
-                        @csrf
-                        <button class="link--destroy" type="submit" value="">Destroy</button>
-                    </form>
-                </td>
+                <td class="table__data-row-cell table__data-row-cell--button"><button class="link--destroy" type="submit" value="">Destroy</button></td>
             </tr>
         @endforeach
         </tbody>
