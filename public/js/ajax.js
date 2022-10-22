@@ -36,14 +36,17 @@ $(function() {
         }).done(function(data) {
             $('#result').remove();
             $('.table').append('<tbody class="table__body"  id="result">');
+
             var $tag_td = '<td class="table__data-row-cell">';
+            var $tag_td_id = '<td class="table__data-row-cell td-id">';
             var $tag_td_btn = '<td class="table__data-row-cell table__data-row-cell--button">';
 
             for(var i in data) {
-                $('#result').append('<tr class="table__data-row" id= "rowId' + data[i].id + '">');
+                var $rowNum = parseInt(i) + 1;
+                $('#result').append('<tr class="table__data-row" id= "rowId' + $rowNum + '">');
                  
-                $('#rowId'+ data[i].id)
-                .append($tag_td + data[i].id)
+                $('#rowId'+ $rowNum)
+                .append($tag_td_id + data[i].id)
                 .append($tag_td + '<img class="table__data-row-cell--img" src="storage/' + data[i].img_path + '">')
                 .append($tag_td + data[i].product_name)
                 .append($tag_td + data[i].price)
@@ -51,7 +54,8 @@ $(function() {
                 .append($tag_td + data[i].company_name)
                 .append($tag_td_btn + '<a class="link--detail" href="' + 'detail/' + data[i].id + '">Detail</a>')
                 .append($tag_td_btn + '<button class="link--destroy" type="submit" value="">Destroy</button>')
-                .appendTo($('#result'));
+                ;
+                $rowNum++;
             }
 
         }).fail(function(data) {
@@ -76,7 +80,7 @@ $(function() {
             // クリックされた行要素取得(要素のidは 「'rowId' + 商品ID」 で設定されている)
             var $target = $(this).parent().parent();
             // ターゲットから商品IDを取得
-            var $id = $target.attr('id').slice(5);
+            var $id = $target.find('.td-id').text();
             // 商品IDに紐づく商品を削除
             // ajax
             $.ajax({

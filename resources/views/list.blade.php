@@ -64,9 +64,11 @@
             </tr>
         </thead>
         <tbody class="table__body"  id="result">
+        @php $rowNum = 1; @endphp
         @foreach ($products as $product)
-            <tr class="table__data-row" id="rowId{{ $product->id }}">
-                <td class="table__data-row-cell">{{ $product->id }}</td>
+            
+            <tr class="table__data-row" id="rowId{{ $rowNum }}">
+                <td class="table__data-row-cell td-id">{{ $product->id }}</td>
                 <td class="table__data-row-cell"><img class="table__data-row-cell--img" src="{{ asset('storage/' . $product->img_path) }}"></td>
                 <td class="table__data-row-cell">{{ $product->product_name }}</td>
                 <td class="table__data-row-cell">{{ $product->price }}</td>
@@ -75,6 +77,7 @@
                 <td class="table__data-row-cell table__data-row-cell--button"><a class="link--detail" href="{{ route('product.detail', ['id'=>$product->id]) }}">Detail</a></td>
                 <td class="table__data-row-cell table__data-row-cell--button"><button class="link--destroy" type="submit" value="">Destroy</button></td>
             </tr>
+            @php $rowNum++; @endphp
         @endforeach
         </tbody>
     </table>
@@ -82,6 +85,6 @@
 <!----------------------------------------------------
 JavaScript
 ----------------------------------------------------->
-<script src="{{ asset('/js/script.js') }}"></script>
+
 @endsection
 
