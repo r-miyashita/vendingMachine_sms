@@ -53,14 +53,14 @@
     <table class="table">
         <thead class="table__head" >
             <tr class="table__head-row">
-                <th class="table__head-row-cell table__head-row-cell--narrow">ID</th>
-                <th class="table__head-row-cell table__head-row-cell--primary">Image</th>
-                <th class="table__head-row-cell table__head-row-cell--wide">Product</th>
-                <th class="table__head-row-cell table__head-row-cell--narrow">Price</th>
-                <th class="table__head-row-cell table__head-row-cell--narrow">Stock</th>
-                <th class="table__head-row-cell table__head-row-cell--primary">Company</th>
-                <th class="table__head-row-cell table__head-row-cell--narrow"></th>
-                <th class="table__head-row-cell table__head-row-cell--narrow"></th>
+                <th id="0" data-sort="" class="table__head-row-cell table__head-row-cell--narrow">ID</th>
+                <th id="1" data-sort="" class="table__head-row-cell table__head-row-cell--primary">Image</th>
+                <th id="2" data-sort="" class="table__head-row-cell table__head-row-cell--wide">Product</th>
+                <th id="3" data-sort="" class="table__head-row-cell table__head-row-cell--narrow">Price</th>
+                <th id="4" data-sort="" class="table__head-row-cell table__head-row-cell--narrow">Stock</th>
+                <th id="5" data-sort="" class="table__head-row-cell table__head-row-cell--primary">Company</th>
+                <th id="6" data-sort="" class="table__head-row-cell table__head-row-cell--narrow"></th>
+                <th id="7" data-sort="" class="table__head-row-cell table__head-row-cell--narrow"></th>
             </tr>
         </thead>
         <tbody class="table__body"  id="result">
@@ -77,7 +77,7 @@
                 <td class="table__data-row-cell table__data-row-cell--button"><a class="link--detail" href="{{ route('product.detail', ['id'=>$product->id]) }}">Detail</a></td>
                 <td class="table__data-row-cell table__data-row-cell--button"><button class="link--destroy" type="submit" value="">Destroy</button></td>
             </tr>
-            @php $rowNum++; @endphp
+            @php $rowNum ++; @endphp
         @endforeach
         </tbody>
     </table>
@@ -85,6 +85,5 @@
 <!----------------------------------------------------
 JavaScript
 ----------------------------------------------------->
-
 @endsection
 
