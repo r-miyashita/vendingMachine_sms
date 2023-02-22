@@ -175,16 +175,13 @@ class Product extends Model
     }
 
     /************************************
-     * 在庫減算処理
-     * 商品購入分を在庫から減算する（削減数は[1]想定）
+     * 在庫削除処理
+     * 対象商品のレコード削除
      * 
-     * @return $result 処理結果
+     * @return なし
      */
     public function destroyProduct() {
-        // ファイル削除用パス取得
-        $target = $this->img_path;
     
-        // 削除処理
         DB::beginTransaction();
     
         try {
