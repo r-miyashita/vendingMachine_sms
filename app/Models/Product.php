@@ -186,6 +186,7 @@ class Product extends Model
     
         try {
             $this->delete();
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             // 処理ができなかった場合は例外スロー
