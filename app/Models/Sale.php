@@ -8,33 +8,30 @@ use Illuminate\Support\Facades\DB;
 class Sale extends Model
 {
     /************************************
-     * 登録（更新）
-     * パラメータをDBに保存
-     * 
-     * @param $request フォームからの登録情報
-     * @param $product 登録対象となるインスタンス
-     * @param $company_id 
-     * 
-     * @return なし
-     */
-    public function register($product) {
-        $this->product_id = $product->id;
-        $this->save();
-        $this->touch();
-    }
-
-    /************************************
-     * 関連レコード取得
-     * 商品情報と紐付くレコードを特定
+     * 売上登録処理
+     * 購入された商品の売上を登録する
      * 
      * @param $id 商品ID
      * 
-     * @return 紐付けされたセールス情報
+     * @return $result 処理結果
      */
-    public function getRelationalRecord($id) {
-        $sale = DB::table('sales')
-                  ->where('product_id', $id);
+    public function salesRegistration($id) {
+        $result = 0;
 
-        return $sale;
+        DB::beginTransaction();
+        try {
+            $this->product_id = $id;
+            $this->save();
+            DB::commit();
+
+            $result = 0;
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $result =1;
+        }
+
+        return $result;
     }
 }

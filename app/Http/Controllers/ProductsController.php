@@ -32,7 +32,7 @@ class ProductsController extends Controller
      * @return 検索条件、検索結果
      */
     public function showList(Request $request) {
-       
+
         // Product モデルから商品一覧データ取得
         $keyword = $request->input('keyword');
         $filter = $request->input('filter');
@@ -109,7 +109,7 @@ class ProductsController extends Controller
      */
     public function showDetail($id) {
         $product = Product::findOrFail($id);
-                               
+
         // 商品のメーカー名取得しておく
         $company_obj = new Company();
         $company_name = $company_obj->getCompanyName($product);
@@ -181,17 +181,14 @@ class ProductsController extends Controller
      * @return なし
      */
     public function destroy($id) {
-        // ファイル削除
+        // 削除対象取得
         $product = Product::findOrFail($id);
+        // 物理ファイル削除
         $target = $product->img_path;
-        Storage::disk('public')->delete($target);
+        if($target) { Storage::disk('public')->delete($target); }
         
         // DB削除
-        $product->destroy($id);
-        
-        Sale::where('product_id', $id)
-            ->firstOrFail()
-            ->delete();
+        $product->destroyProduct();
     }
     
     // ↑↑↑ 【 destroy 】 処理ここまで ↑↑↑

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SalesController extends Controller
 {
@@ -45,7 +46,7 @@ class SalesController extends Controller
             $error_message = "購入処理失敗:例外発生により未処理で修了";
 
         }
-
+         Log::info(compact('result', 'error_message', 'requestId', 'product'));
         return compact('result', 'error_message', 'requestId', 'product');
     }
 }

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Company;
-use App\Models\Sale;
 
 class Product extends Model
 {
@@ -41,11 +40,10 @@ class Product extends Model
      * @param $request フォームからの登録情報
      * @param $product 登録対象となるインスタンス
      * @param $company_id 会社ID
-     * @param $sale $productに紐付くセールス情報のインスタンス
      * 
      * @return なし
      */
-    public function register($request, $company_id, $sale) {
+    public function register($request, $company_id) {
         DB::beginTransaction();
 
         try {
@@ -65,8 +63,7 @@ class Product extends Model
             }
              // 保存
             $this->save();
-            // salesも一緒に登録（更新）
-            $sale->register($this);
+
             // コミット
             DB::commit();
 
@@ -76,6 +73,14 @@ class Product extends Model
         }
     }
 
+    /************************************
+     * 検索結果取得
+     * 検索結果を返却する
+     * 
+     * @param $request 検索条件
+     * 
+     * @return $products 検索結果
+     */
     public function getSearchResult($request) {
         $keyword = $request->input('keyword');
         $filter = $request->input('filter');
@@ -132,4 +137,66 @@ class Product extends Model
 
         return $products;
     }
+
+    /************************************
+     * 在庫減算処理
+     * 商品購入分を在庫から減算する（削減数は[1]想定）
+     * 
+     * @return $result 処理結果
+     */
+    public function decrementStock() {
+        // 戻り値初期化
+        $result = 0;
+        $reduce_number = 1;
+
+        // 在庫が有る場合は減算処理を行う
+        if ($this->stock > 0) {
+
+            DB::beginTransaction();
+
+            try {
+                $this->stock -= $reduce_number;
+                $this->save();
+                DB::commit();
+                $result = 0;
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                // 処理ができなかった場合は例外スロー
+                $result = 2;
+
+            }
+        } else {
+            $result = 1;
+
+        }
+
+        return $result;
+    }
+
+    /************************************
+     * 在庫減算処理
+     * 商品購入分を在庫から減算する（削減数は[1]想定）
+     * 
+     * @return $result 処理結果
+     */
+    public function destroyProduct() {
+        // ファイル削除用パス取得
+        $target = $this->img_path;
+    
+        // 削除処理
+        DB::beginTransaction();
+    
+        try {
+            $this->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // 処理ができなかった場合は例外スロー
+        }
+        
+    }
 }
+
+
+
+
