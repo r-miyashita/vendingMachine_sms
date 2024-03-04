@@ -22,12 +22,12 @@ class ProductsController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     // ↓↓↓ 【 list 】 処理ここから ↓↓↓
     /************************************
      * 商品の一覧を表示
      * テーブルから一覧情報を取得。検索リクエストがあれば絞り込みを行う。
-     * 
+     *
      * @param $request 検索条件
      * @return 検索条件、検索結果
      */
@@ -36,14 +36,14 @@ class ProductsController extends Controller
         // Product モデルから商品一覧データ取得
         $keyword = $request->input('keyword');
         $filter = $request->input('filter');
-        
+
         $product_obj = new Product();
         $products = $product_obj->getProductsList();
-        
+
         // 会社一覧情報を取得(検索フォームのフィルター用)
         $company_obj = new Company();
         $companies = $company_obj->getList();
-        
+
         // list を呼び出す（ビュー表示）
         return view('list', compact('keyword', 'filter', 'products', 'companies'));
     }
@@ -64,7 +64,7 @@ class ProductsController extends Controller
     /************************************
      * 新規登録フォームを表示
      * セレクトボックス用の会社情報を取得し登録フォームに渡す
-     * 
+     *
      * @param なし
      * @return セレクトボックス情報
      */
@@ -79,7 +79,7 @@ class ProductsController extends Controller
     /************************************
      * 新規登録
      * 入力フォーム情報をDBに保存
-     * 
+     *
      * @param $request 新規登録情報
      * @return なし
      */
@@ -91,7 +91,7 @@ class ProductsController extends Controller
         // 会社名に合致する id を取得
         $company_obj = new Company();
         $company_id = $company_obj->getCompanyId($request);
-        
+
         $product->register($request, $company_id, $sale);
 
         return back();
@@ -103,7 +103,7 @@ class ProductsController extends Controller
     /************************************
      * 特定商品のレコードを表示
      * IDと紐付く商品情報を取得
-     * 
+     *
      * @param $id 特定用のID
      * @return 商品情報、これに紐付く会社名
      */
@@ -123,13 +123,13 @@ class ProductsController extends Controller
     /************************************
      * 編集フォームを表示
      * IDと紐付く商品情報を初期値としたフォームを表示。セレクトボックス用の会社情報を取得し登録フォームに渡す
-     * 
+     *
      * @param $id 特定用のID
      * @return 商品情報、これに紐付く会社名、セレクトボックス情報
      */
     public function showUpdateForm($id) {
         $product = Product::findOrFail($id);
-                                
+
         // 商品のメーカー名取得しておく
         $company_obj = new Company();
         $company_name = $company_obj->getCompanyName($product);
@@ -143,7 +143,7 @@ class ProductsController extends Controller
     /************************************
      * 編集データ更新
      * 入力フォーム情報をDBに保存
-     * 
+     *
      * @param $request 新規登録情報
      * @param $id 特定用のID
      * @return なし
@@ -151,22 +151,22 @@ class ProductsController extends Controller
     public function update(ProductRequest $request, $id) {
 
         $product = Product::findOrFail($id);
-        
+
         // 会社名に合致する id を取得
         $company_obj = new Company();
         $company_id = $company_obj->getCompanyId($request);
-        
+
         // 更新前画像パス取得
         $old_img_path = $product->img_path;
-        
+
         // DB更新
         $product->register($request, $company_id);
-        
+
         // 更新前後で画像が一致しなければ、古い画像削除
         if (!($old_img_path == $product->img_path)) {
-            Storage::disk('public')->delete($old_img_path); 
+            Storage::disk('public')->delete($old_img_path);
         }
-            
+
         return back();
     }
     // ↑↑↑ 【 update 】 処理ここまで ↑↑↑
@@ -174,9 +174,8 @@ class ProductsController extends Controller
 
     // ↓↓↓ 【 destroy 】 処理ここから ↓↓↓
     /************************************
-     * 選択した商品レコードを削除
      * 商品レコードのidと紐付くデータをDBから削除
-     * 
+     *
      * @param $id 商品レコードのid
      * @return なし
      */
@@ -186,11 +185,11 @@ class ProductsController extends Controller
         // 物理ファイル削除
         $target = $product->img_path;
         if($target) { Storage::disk('public')->delete($target); }
-        
+
         // DB削除
         $product->destroyProduct();
     }
-    
+
     // ↑↑↑ 【 destroy 】 処理ここまで ↑↑↑
 
 }

@@ -11,23 +11,23 @@ class Product extends Model
     /************************************
      * 商品一覧情報取得
      * products と companies を内部結合し一覧画面の必要項目取得
-     * 
+     *
      * @param $keyword 検索キーワード
      * @param $filter フィルターワード
      * @return 一覧情報
      */
     public function getProductsList() {
         $query = DB::table('products')
-                   ->join('companies', 'products.company_id', '=', 'companies.id')
-                   ->select(
-                       'products.id',
-                       'products.img_path',
-                       'products.product_name',
-                       'products.price',
-                       'products.stock',
-                       'companies.company_name'
-                   );
-        
+            ->join('companies', 'products.company_id', '=', 'companies.id')
+            ->select(
+                'products.id',
+                'products.img_path',
+                'products.product_name',
+                'products.price',
+                'products.stock',
+                'companies.company_name'
+            );
+
         $products = $query->get();
 
         return $products;
@@ -36,11 +36,11 @@ class Product extends Model
     /************************************
      * 登録（更新）
      * パラメータをDBに保存
-     * 
+     *
      * @param $request フォームからの登録情報
      * @param $product 登録対象となるインスタンス
      * @param $company_id 会社ID
-     * 
+     *
      * @return なし
      */
     public function register($request, $company_id) {
@@ -53,7 +53,7 @@ class Product extends Model
             $this->price = $request->input('price');
             $this->stock = $request->input('stock');
             $this->comment = $request->input('comment');
-    
+
             // アップロードしたファイルを保存 & ファイルパスをDBへ保存
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
@@ -76,9 +76,9 @@ class Product extends Model
     /************************************
      * 検索結果取得
      * 検索結果を返却する
-     * 
+     *
      * @param $request 検索条件
-     * 
+     *
      * @return $products 検索結果
      */
     public function getSearchResult($request) {
@@ -141,7 +141,7 @@ class Product extends Model
     /************************************
      * 在庫減算処理
      * 商品購入分を在庫から減算する（削減数は[1]想定）
-     * 
+     *
      * @return $result 処理結果
      */
     public function decrementStock() {
@@ -177,13 +177,13 @@ class Product extends Model
     /************************************
      * 在庫削除処理
      * 対象商品のレコード削除
-     * 
+     *
      * @return なし
      */
     public function destroyProduct() {
-    
+
         DB::beginTransaction();
-    
+
         try {
             $this->delete();
             DB::commit();
@@ -191,7 +191,7 @@ class Product extends Model
             DB::rollback();
             // 処理ができなかった場合は例外スロー
         }
-        
+
     }
 }
 
